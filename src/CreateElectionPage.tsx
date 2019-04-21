@@ -4,7 +4,6 @@ import { useMachine } from '@xstate/react';
 import { createElectionMachine } from './createElectionMachine';
 import * as uuid from 'uuid';
 import {
-  Paper,
   FormLabel,
   Button,
   Typography,
@@ -22,7 +21,7 @@ export const CreateElectionPage: React.FC = () => {
     createElectionMachine.withConfig(
       {},
       {
-        id: uuid.v4(),
+        id: uuid.v4(), //this is currently unused, but probably will be in the future
         name: '',
         description: '',
         candidates: [],
@@ -76,6 +75,10 @@ export const CreateElectionPage: React.FC = () => {
     [send]
   );
 
+  const onStart = useCallback(() => {
+    send('ELECTION_STARTED');
+  }, [send]);
+
   return (
     <div style={{ padding: '15px' }}>
       <Flex width={1} flexDirection="column">
@@ -84,7 +87,7 @@ export const CreateElectionPage: React.FC = () => {
             new election
           </Typography>
 
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={onStart}>
             start!
           </Button>
         </Flex>

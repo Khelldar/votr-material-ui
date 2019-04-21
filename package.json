@@ -9,6 +9,11 @@
     "@types/node": "11.13.6",
     "@types/react-dom": "16.8.4",
     "@xstate/react": "^0.3.0",
+    "apollo": "^2.8.3",
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-client-codegen": "0.0.7",
+    "graphql-tag": "^2.10.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
@@ -20,6 +25,7 @@
     "xstate": "^4.5.0"
   },
   "scripts": {
+    "generate": "apollo-client-codegen generate:serviceFactory --server=https://votr-graphql-event-sourced.herokuapp.com/graphql  --includes=./src/**/*.gql --outputDir=./src/generated",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -35,6 +41,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/graphql": "^14.2.0",
     "@types/react": "^16.8.14",
     "@types/react-router-dom": "^4.3.2",
     "@types/rebass": "^3.0.3",

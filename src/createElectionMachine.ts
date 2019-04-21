@@ -1,4 +1,5 @@
 import { Machine, assign } from 'xstate';
+import { service, createServiceWithAccessToken } from './service';
 
 interface Context {
   id: string;
@@ -37,11 +38,16 @@ type Event =
       payload: {
         id: string;
       };
+    }
+  | {
+      type: 'ELECTION_STARTED';
     };
 
 interface StateSchema {
   states: {
     idle: {};
+    pending: {};
+    created: {};
   };
 }
 
@@ -94,7 +100,43 @@ export const createElectionMachine = Machine<Context, StateSchema, Event>({
             }),
           ],
         },
+        ELECTION_STARTED: {
+          target: 'pending',
+        },
       },
+    },
+    pending: {
+      invoke: {
+        src: ctx => {
+          return service
+            .CreateElection({
+              name: ctx.name,
+              description: ctx.description,
+              candidates: ctx.candidates,
+              email: 'christopher.langager@gmail.com',
+            })
+            .then(async res => {
+              const adminToken = res.data!.createElection.adminToken!;
+              const loginResponse = await service.WeakLogin({ adminToken });
+              const accessToken = loginResponse.data!.weakLogin.accessToken;
+              const serviceWithToken = createServiceWithAccessToken(accessToken);
+
+              const id = res.data!.createElection.election.id;
+              return serviceWithToken.StartElection({ id });
+            });
+        },
+        onDone: {
+          target: 'created',
+        },
+        onError: {
+          actions: (_ctx, err) => {
+            console.log(err);
+          },
+        },
+      },
+    },
+    created: {
+      onEntry: ['notifyCreated'],
     },
   },
 });

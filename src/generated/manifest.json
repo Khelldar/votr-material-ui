@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "operations": [
+    {
+      "signature": "2eb4ef44ccc429a463bb4609207a349cca01739fbee2db92b2448a6a5cbd3808",
+      "document": "mutation CastBallot($candidateIds:[ID!]!,$electionId:ID!){castBallot(input:{electionId:$electionId,candidateIds:$candidateIds})}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "3cd7e2ab9cc849accc3447f8b4f1a780e3e7b41f9ae77e17675097748990705c",
+      "document": "mutation CreateElection($candidates:[CreateCandidateInput!]!,$description:String!,$email:String,$name:String!){createElection(input:{name:$name,description:$description,candidates:$candidates,email:$email}){__typename adminToken election{__typename candidates{__typename description id name}description id name results{__typename winner{__typename id name}}status statusTransitions{__typename on status}}}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "07f6dddb6b35a395edcaeca1dab16ced02d63a9eaebb0a87d178d72aad8315eb",
+      "document": "query GetElections($ids:[ID!]!){getElections(input:{ids:$ids}){__typename elections{__typename description id name status statusTransitions{__typename on status}}}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "d1e329c98333650ed5c489913e21dab680b16fb69ec489d587176766b3c860b9",
+      "document": "query ListElections{listElections(input:{}){__typename elections{__typename dateUpdated description id name status}}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "ad3fd2adcf9b8ac2e89f405ed523a6d4e4d0932e8f97eee1486ea39e9257bf69",
+      "document": "mutation StartElection($id:ID!){startElection(input:{id:$id}){__typename election{__typename candidates{__typename description id name}description id name results{__typename winner{__typename id name}}status statusTransitions{__typename on status}}}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "5dfb79ea4df99f7de2a237ea4552871959db525991561f03b43664940bd6ed9f",
+      "document": "mutation StopElection($id:ID!){stopElection(input:{id:$id}){__typename election{__typename candidates{__typename description id name}description id name results{__typename winner{__typename id name}}status statusTransitions{__typename on status}}}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "7ff76825a2e81bf81aa046930e4187e326eb39fb8b7e5e75759ea11c705d2182",
+      "document": "mutation UpdateElection($candidates:[CreateCandidateInput!],$description:String,$id:ID!,$name:String){updateElection(input:{id:$id,name:$name,description:$description,candidates:$candidates}){__typename election{__typename candidates{__typename description id name}description id name results{__typename winner{__typename id name}}status statusTransitions{__typename on status}}}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    },
+    {
+      "signature": "b965ad18addfff7c2b1ed5f3c8d4f7295141d578a11e32866fe0ec2447ea6cf6",
+      "document": "mutation WeakLogin($adminToken:String!){weakLogin(input:{adminToken:$adminToken}){__typename accessToken}}",
+      "metadata": {
+        "engineSignature": ""
+      }
+    }
+  ]
+}
