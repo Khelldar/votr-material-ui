@@ -3,14 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.6",
-    "@types/react": "16.8.14",
     "@types/react-dom": "16.8.4",
+    "@xstate/react": "^0.3.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
-    "typescript": "3.4.4"
+    "rebass": "^3.1.0",
+    "styled-components": "^4.2.0",
+    "typescript": "3.4.4",
+    "uuid": "^3.3.2",
+    "xstate": "^4.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,5 +32,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react": "^16.8.14",
+    "@types/react-router-dom": "^4.3.2",
+    "@types/rebass": "^3.0.3",
+    "@types/uuid": "^3.4.4"
+  }
 }
