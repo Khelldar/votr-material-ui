@@ -4,10 +4,6 @@ interface Context {
   id: string;
   name: string;
   description: string;
-  candidateInput: {
-    name: string;
-    description: string;
-  };
   candidates: {
     id: string;
     name: string;
@@ -34,6 +30,12 @@ type Event =
         id: string;
         name: string;
         description: string;
+      };
+    }
+  | {
+      type: 'CANDIDATE_REMOVED';
+      payload: {
+        id: string;
       };
     };
 
@@ -71,10 +73,6 @@ export const createElectionMachine = Machine<Context, StateSchema, Event>({
           actions: [
             assign((ctx, event) => {
               return {
-                candidateInput: {
-                  name: '',
-                  description: '',
-                },
                 candidates: [
                   ...ctx.candidates,
                   {
@@ -83,6 +81,15 @@ export const createElectionMachine = Machine<Context, StateSchema, Event>({
                     description: event.payload.description,
                   },
                 ],
+              };
+            }),
+          ],
+        },
+        CANDIDATE_REMOVED: {
+          actions: [
+            assign((ctx, event) => {
+              return {
+                candidates: ctx.candidates.filter(({ id }) => id !== event.payload.id),
               };
             }),
           ],

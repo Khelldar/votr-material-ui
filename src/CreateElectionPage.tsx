@@ -1,10 +1,21 @@
 import React, { useCallback } from 'react';
-import TextField from '@material-ui/core/TextField';
+
 import { useMachine } from '@xstate/react';
 import { createElectionMachine } from './createElectionMachine';
 import * as uuid from 'uuid';
-import { Paper, FormLabel, Button } from '@material-ui/core';
+import {
+  Paper,
+  FormLabel,
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  TextField,
+} from '@material-ui/core';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import { Flex } from 'rebass';
+import { AddCandidateForm } from './AddCandidateForm';
 
 export const CreateElectionPage: React.FC = () => {
   const [current, send] = useMachine(
@@ -14,7 +25,6 @@ export const CreateElectionPage: React.FC = () => {
         id: uuid.v4(),
         name: '',
         description: '',
-        candidateInput: { name: '', description: '' },
         candidates: [],
       }
     )
@@ -42,11 +52,24 @@ export const CreateElectionPage: React.FC = () => {
     [send]
   );
 
-  const onCandidateInputDescriptionChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      send('DESCRIPTION_CHANGED', {
+  const candidateAdded = useCallback(
+    newCandidate => {
+      send('CANDIDATE_ADDED', {
         payload: {
-          name: e.target.value,
+          id: newCandidate.id,
+          name: newCandidate.name,
+          description: newCandidate.description,
+        },
+      });
+    },
+    [send]
+  );
+
+  const candidateRemoved = useCallback(
+    (id: string) => () => {
+      send('CANDIDATE_REMOVED', {
+        payload: {
+          id,
         },
       });
     },
@@ -55,71 +78,65 @@ export const CreateElectionPage: React.FC = () => {
 
   return (
     <div style={{ padding: '15px' }}>
-      <h1>Create Election</h1>
-      <form noValidate autoComplete="off">
-        <Flex width={3 / 4} flexDirection="column">
-          <TextField
-            label="name"
-            margin="normal"
-            value={current.context.name}
-            onChange={onNameChange}
-          />
+      <Flex width={1} flexDirection="column">
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Typography variant="h4" gutterBottom>
+            new election
+          </Typography>
 
-          <TextField
-            label="description"
-            multiline
-            rows="4"
-            margin="normal"
-            value={current.context.description}
-            onChange={onDescriptionChange}
-          />
-
-          <Paper style={{ padding: '10px' }}>
-            <form
-              onSubmit={e => {
-                //not sure I want to use this
-                e.preventDefault();
-
-                //@ts-ignore
-                const data = new FormData(e.target);
-
-                const name = data.get('name');
-                const description = data.get('description');
-
-                send('CANDIDATE_ADDED', {
-                  payload: {
-                    id: uuid.v4(),
-                    name,
-                    description,
-                  },
-                });
-
-                //@ts-ignore
-                e.target.reset();
-              }}
-            >
-              <Flex flexDirection="column">
-                <TextField required name="name" label="candidate name" margin="normal" />
-                <TextField
-                  name="description"
-                  label="candidate description"
-                  multiline
-                  rows="2"
-                  margin="normal"
-                />
-                <Button type="submit">add candidate</Button>
-              </Flex>
-            </form>
-          </Paper>
-          <ul>
-            {current.context.candidates.map(candidate => (
-              <li>
-                {candidate.name} - {candidate.description}
-              </li>
-            ))}
-          </ul>
+          <Button variant="contained" color="primary">
+            start!
+          </Button>
         </Flex>
-      </form>
+
+        <TextField
+          label="name"
+          margin="normal"
+          value={current.context.name}
+          onChange={onNameChange}
+        />
+
+        <TextField
+          label="description"
+          margin="normal"
+          value={current.context.description}
+          onChange={onDescriptionChange}
+        />
+
+        <AddCandidateForm candidateAdded={candidateAdded} />
+
+        <FormLabel style={{ marginTop: '10px' }}>candidates</FormLabel>
+        {current.context.candidates.length === 0 && (
+          <Flex justifyContent="center" my={15}>
+            <Typography color="textSecondary" gutterBottom>
+              NO CANDIDATES ADDED
+            </Typography>
+          </Flex>
+        )}
+        <List dense>
+          {current.context.candidates.map(candidate => (
+            <ListItem>
+              <Flex
+                alignItems="row"
+                flexWrap="nowrap"
+                justifyContent="space-between"
+                width={1}
+              >
+                <Flex width={5 / 6}>
+                  <ListItemText
+                    style={{ width: '100%', overflow: 'scroll' }}
+                    primary={candidate.name}
+                    secondary={candidate.description}
+                  />
+                </Flex>
+                <Flex alignItems="right" justifyContent="right">
+                  <DeleteRoundedIcon onClick={candidateRemoved(candidate.id)} />
+                </Flex>
+              </Flex>
+            </ListItem>
+          ))}
+        </List>
+      </Flex>
     </div>
   );
 };
