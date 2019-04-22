@@ -14,6 +14,13 @@ export interface GetElections_getElections_elections_statusTransitions {
   status: ElectionStatus;
 }
 
+export interface GetElections_getElections_elections_candidates {
+  __typename: "Candidate";
+  id: string;
+  name: string;
+  description: string | null;
+}
+
 export interface GetElections_getElections_elections {
   __typename: "Election";
   id: string;
@@ -21,6 +28,7 @@ export interface GetElections_getElections_elections {
   description: string;
   status: ElectionStatus;
   statusTransitions: GetElections_getElections_elections_statusTransitions[];
+  candidates: GetElections_getElections_elections_candidates[];
 }
 
 export interface GetElections_getElections {

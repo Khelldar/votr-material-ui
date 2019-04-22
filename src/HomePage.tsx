@@ -10,6 +10,8 @@ import {
 import { service } from './service';
 import { ApolloQueryResult } from 'apollo-client';
 import { Card, CardContent, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { ElectionStatus } from './generated/globalTypes';
 
 type Election = ListElections_listElections_elections;
 interface Context {
@@ -41,10 +43,9 @@ export const listElectionsMachine = Machine<Context, StateSchema, Event>({
           target: 'idle',
           actions: [
             assign((_ctx, event: DoneInvokeEvent<ApolloQueryResult<ListElections>>) => {
-              console.log(event);
               return {
-                elections: event.data.data.listElections.elections.sort((a, b) =>
-                  new Date(a.dateUpdated) > new Date(b.dateUpdated) ? -1 : 1
+                elections: event.data.data.listElections.elections.filter(
+                  ({ status }) => status === ElectionStatus.OPEN
                 ),
               };
             }),
@@ -64,8 +65,6 @@ export const listElectionsMachine = Machine<Context, StateSchema, Event>({
 export const HomePage: React.FC = () => {
   const [current] = useMachine(listElectionsMachine.withConfig({}, { elections: [] }));
 
-  console.log(current.matches('loading'));
-
   if (current.matches('loading')) {
     return <div>loading...</div>;
   }
@@ -73,13 +72,15 @@ export const HomePage: React.FC = () => {
   return (
     <>
       {current.context.elections.map(election => (
-        <Card key={election.id}>
-          <CardContent>
-            <Typography variant="h5">{election.name}</Typography>
-            <Typography color="textSecondary">{election.description}</Typography>
-            <Typography>{election.status}</Typography>
-          </CardContent>
-        </Card>
+        <Link to={`/ballot/${election.id}`} style={{ textDecoration: 'none' }}>
+          <Card key={election.id}>
+            <CardContent>
+              <Typography variant="h5">{election.name}</Typography>
+              <Typography color="textSecondary">{election.description}</Typography>
+              <Typography>{election.status}</Typography>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </>
   );

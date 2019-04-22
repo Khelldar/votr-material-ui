@@ -14,7 +14,11 @@
     "apollo-client": "^2.5.1",
     "apollo-client-codegen": "0.0.7",
     "graphql-tag": "^2.10.1",
+    "immutability-helper": "^3.0.0",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^11.0.0",
+    "react-dnd": "^7.4.5",
+    "react-dnd-html5-backend": "^7.4.4",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
@@ -43,6 +47,7 @@
   "devDependencies": {
     "@types/graphql": "^14.2.0",
     "@types/react": "^16.8.14",
+    "@types/react-beautiful-dnd": "^11.0.1",
     "@types/react-router-dom": "^4.3.2",
     "@types/rebass": "^3.0.3",
     "@types/uuid": "^3.4.4"

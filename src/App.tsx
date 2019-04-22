@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { HomePage } from './HomePage';
+import { BallotPage } from './BallotPage';
 import { CreateElectionPage } from './CreateElectionPage';
 import { Flex } from 'rebass';
 
@@ -23,6 +24,7 @@ export const App: React.FC = () => {
 
             <Route exact path="/" component={HomePage} />
             <Route path="/create" component={CreateElectionPage} />
+            <Route path="/ballot/:id" component={BallotPage} />
           </div>
         </Router>
       </div>

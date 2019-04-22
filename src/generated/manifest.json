@@ -16,8 +16,8 @@
       }
     },
     {
-      "signature": "07f6dddb6b35a395edcaeca1dab16ced02d63a9eaebb0a87d178d72aad8315eb",
-      "document": "query GetElections($ids:[ID!]!){getElections(input:{ids:$ids}){__typename elections{__typename description id name status statusTransitions{__typename on status}}}}",
+      "signature": "9f50a1258699b6fc70db92b993418dc2bfa834667893759c21872df9f468daa1",
+      "document": "query GetElections($ids:[ID!]!){getElections(input:{ids:$ids}){__typename elections{__typename candidates{__typename description id name}description id name status statusTransitions{__typename on status}}}}",
       "metadata": {
         "engineSignature": ""
       }

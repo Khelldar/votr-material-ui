@@ -9,6 +9,11 @@ query GetElections($ids: [ID!]!) {
         on
         status
       }
+      candidates {
+        id
+        name
+        description
+      }
     }
   }
 }
